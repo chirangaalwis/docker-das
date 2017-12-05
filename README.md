@@ -1,6 +1,6 @@
-# WSO2 Data Analytics Server Docker Artifacts
+# WSO2 Data Analytics Server Docker Resources
 
-This repository contains following Docker artifacts:
+This repository contains following Docker resources:
 - WSO2 Data Analytics Server Dockerfile
 - WSO2 Data Analytics Server Docker Compose File
 
