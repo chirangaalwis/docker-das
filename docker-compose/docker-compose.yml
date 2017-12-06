@@ -1,0 +1,96 @@
+version: '2.2'
+services:
+  # for evaluation purposes only
+  admindb:
+    container_name: admindb
+    image: mysql:5.7.19
+    ports:
+      - 3306:3306
+    volumes:
+        - ${PWD}/files/mysql.sql:/docker-entrypoint-initdb.d/mysql.sql
+        - ${PWD}/files/my.cnf:/etc/mysql/conf.d/my.cnf
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      # MYSQL_USER: wso2carbon
+      # MYSQL_PASSWORD: wso2carbon
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 60s
+      retries: 5
+
+  eventstore:
+    container_name: eventstoredb
+    image: mysql:5.7.19
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: WSO2_ANALYTICS_EVENT_STORE_DB
+      # MYSQL_USER: wso2carbon
+      # MYSQL_PASSWORD: wso2carbon
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 60s
+      retries: 5
+
+  processeddatastore:
+    container_name: processeddatastoredb
+    image: mysql:5.7.19
+    ports:
+      - 3308:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: WSO2_ANALYTICS_PROCESSED_DATA_STORE_DB
+      # MYSQL_USER: wso2carbon
+      # MYSQL_PASSWORD: wso2carbon
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 60s
+      retries: 5
+
+  # analytics-1:
+  #   container_name: analytics1
+  #   image: wso2das:3.1.0
+  #   volumes:
+  #       - ${PWD}/confs/analytics-1/repository/conf/analytics/spark/spark-defaults.conf:/home/wso2carbon/wso2das-3.1.0/repository/conf/analytics/spark/spark-defaults.conf
+  #       - ${PWD}/confs/analytics-1/repository/conf/analytics/my-node-id.dat:/home/wso2carbon/wso2das-3.1.0/repository/conf/analytics/my-node-id.dat
+  #       - ${PWD}/confs/analytics-1/repository/conf/axis2/axis2.xml:/home/wso2carbon/wso2das-3.1.0/repository/conf/axis2/axis2.xml
+  #       - ${PWD}/confs/analytics-1/repository/conf/datasources/analytics-datasources.xml:/home/wso2carbon/wso2das-3.1.0/repository/conf/datasources/analytics-datasources.xml
+  #       - ${PWD}/confs/analytics-1/repository/conf/datasources/master-datasources.xml:/home/wso2carbon/wso2das-3.1.0/repository/conf/datasources/master-datasources.xml
+  #       - ${PWD}/confs/analytics-1/repository/conf/carbon.xml:/home/wso2carbon/wso2das-3.1.0/repository/conf/carbon.xml
+  #       - ${PWD}/confs/analytics-1/repository/conf/event-processor.xml:/home/wso2carbon/wso2das-3.1.0/repository/conf/event-processor.xml
+  #       - ${PWD}/confs/analytics-1/repository/conf/registry.xml:/home/wso2carbon/wso2das-3.1.0/repository/conf/registry.xml
+  #       - ${PWD}/confs/analytics-1/repository/conf/usr-mgt.xml:/home/wso2carbon/wso2das-3.1.0/repository/conf/usr-mgt.xml
+  #       - ${PWD}/files/mysql-connector-java-5.1.43.zip:/home/wso2carbon/wso2das-3.1.0/repository/components/lib/mysql-connector-java-5.1.43.zip
+  #   depends_on:
+  #     admindb:
+  #       condition: service_healthy
+  #     eventstore:
+  #       condition: service_healthy
+  #     processeddatastore:
+  #       condition: service_healthy
+  #
+  # analytics-2:
+  #   container_name: analytics-2
+  #   image: wso2das:3.1.0
+  #   volumes:
+  #       - ${PWD}/confs/analytics-2/repository/conf/analytics/spark/spark-defaults.conf:/home/wso2carbon/wso2das-3.1.0/repository/conf/analytics/spark/spark-defaults.conf
+  #       - ${PWD}/confs/analytics-2/repository/conf/analytics/my-node-id.dat:/home/wso2carbon/wso2das-3.1.0/repository/conf/analytics/my-node-id.dat
+  #       - ${PWD}/confs/analytics-2/repository/conf/axis2/axis2.xml:/home/wso2carbon/wso2das-3.1.0/repository/conf/axis2/axis2.xml
+  #       - ${PWD}/confs/analytics-2/repository/conf/datasources/analytics-datasources.xml:/home/wso2carbon/wso2das-3.1.0/repository/conf/datasources/analytics-datasources.xml
+  #       - ${PWD}/confs/analytics-2/repository/conf/datasources/master-datasources.xml:/home/wso2carbon/wso2das-3.1.0/repository/conf/datasources/master-datasources.xml
+  #       - ${PWD}/confs/analytics-2/repository/conf/carbon.xml:/home/wso2carbon/wso2das-3.1.0/repository/conf/carbon.xml
+  #       - ${PWD}/confs/analytics-2/repository/conf/event-processor.xml:/home/wso2carbon/wso2das-3.1.0/repository/conf/event-processor.xml
+  #       - ${PWD}/confs/analytics-2/repository/conf/registry.xml:/home/wso2carbon/wso2das-3.1.0/repository/conf/registry.xml
+  #       - ${PWD}/confs/analytics-2/repository/conf/usr-mgt.xml:/home/wso2carbon/wso2das-3.1.0/repository/conf/usr-mgt.xml
+  #       - ${PWD}/files/mysql-connector-java-5.1.43.zip:/home/wso2carbon/wso2das-3.1.0/repository/components/lib/mysql-connector-java-5.1.43.zip
+  #   depends_on:
+  #     admindb:
+  #       condition: service_healthy
+  #     eventstore:
+  #       condition: service_healthy
+  #     processeddatastore:
+  #       condition: service_healthy
